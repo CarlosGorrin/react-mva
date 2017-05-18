@@ -52,7 +52,7 @@ var InboxItem = React.createClass({
     render: function() {
         return (
             <tr>
-                <td>10pm</td>
+                <td ref="name">10pm</td>
                 <td>Loving some pizza</td>
                 <td>Confirmed</td>
             </tr>
