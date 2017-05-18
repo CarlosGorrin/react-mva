@@ -1,14 +1,26 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var samples = require('./sample-data');
+
 var App = React.createClass({
+  getInitialState: function() {
+    return {
+      "humans": {},
+      "stores": {}
+    }
+  },
+  loadSampleData: function() {
+    this.setState(samples);
+  },
   render : function() {
     return (
       <div>
         <div id="header"></div>
+        <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
           <div className="column">
-            <InboxPane />
+            <InboxPane humans={this.state.humans} />
           </div>
           <div className="column"></div>
           <div className="column"></div>
@@ -19,7 +31,10 @@ var App = React.createClass({
 });
 
 var InboxPane = React.createClass({
-  render : function() {
+  renderInboxItem: function(humans){
+    return <InboxItem key={human} index={human} details={this.props.humans[human]} />;
+  },
+  render: function() {
     return (
       <div id="inbox-pane">
         <h1>Inbox</h1>
@@ -32,7 +47,7 @@ var InboxPane = React.createClass({
             </tr>
           </thead>
           <tbody>
-            <InboxItem />
+            {Object.keys(this.props.humans).map(this.renderInboxItem)}
           </tbody>
         </table>
       </div>
@@ -45,7 +60,7 @@ var InboxItem = React.createClass({
     return (
       <tr>
         <td>5PM</td>
-        <td>Rami Loves Pizza</td>
+        <td>{this.props.index}</td>
         <td>Order Sent</td>
       </tr>
     )
