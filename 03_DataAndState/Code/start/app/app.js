@@ -31,7 +31,7 @@ var App = React.createClass({
 });
 
 var InboxPane = React.createClass({
-  renderInboxItem: function(humans){
+  renderInboxItem: function(human){
     return <InboxItem key={human} index={human} details={this.props.humans[human]} />;
   },
   render: function() {
@@ -56,12 +56,19 @@ var InboxPane = React.createClass({
 });
 
 var InboxItem = React.createClass({
+  sortByDate: function(a, b) {
+    return a.time>b.time ? -1 : a.time<b.time ? 1 : 0;
+    },
+  messageSummary: function(conversations){
+    var lastMessage = conversations.sort(this.sortByDate)[0];
+    return lastMessage.who + ' said: "' + lastMessage.text + '" @ ' + lastMessage.time.toDateString();
+  },
   render: function(){
     return (
       <tr>
-        <td>5PM</td>
+        <td>{this.messageSummary(this.props.details.conversations)}</td>
         <td>{this.props.index}</td>
-        <td>Order Sent</td>
+        <td>{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
       </tr>
     )
   }
